@@ -1,0 +1,27 @@
+type ObjectLike = Record<string, any>;
+
+type Request = {
+  method: string,
+  url: string,
+  body?: ObjectLike,
+  headers: ObjectLike,
+}
+
+type ConstructorParams = {
+  message: string,
+  request: Request,
+}
+
+class HttpRequestError extends Error {
+  public readonly request: any;
+
+  constructor(params: ConstructorParams) {
+    super(params.message);
+
+    this.name = 'HttpRequestError';
+    this.request = params.request;
+  }
+}
+
+export default HttpRequestError;
+export { Request };
