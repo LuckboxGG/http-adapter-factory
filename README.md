@@ -4,5 +4,30 @@
 
 # Http Adapter Factory
 
-TODO
+A factory producing http adapters with different(in the near future) underlying library implementations.
+
+### Usage
+
+```
+import HttpAdapterFactory from './src/index';
+
+const httpAdapterFactory = new HttpAdapterFactory();
+const httpAdapter = httpAdapterFactory.create({
+  timeout: 10000
+});
+
+/* ... */
+await httpAdapter.get('http://example.com', { bar: 'foo '});
+await httpAdapter.post('http://example.com', {
+  email: 'user@exampke.com',
+  password: '123456'
+});
+const anotherInfoLogger = infoLoggerFactory.create('Classname2');
+```
+
+## Supported implementations:
+
+Currently, only one request library is supported - [got](https://github.com/sindresorhus/got#readme)
+
+
 
