@@ -131,7 +131,7 @@ describe('GotHttpAdapter', () => {
       httpError.message = 'Http Error';
       httpError.response = {
         statusCode,
-      };
+      } as HTTPError['response'];
       mockGot.get.mockRejectedValueOnce(httpError);
 
       let caughtErr;
@@ -288,7 +288,7 @@ describe('GotHttpAdapter', () => {
       httpError.message = 'Http Error';
       httpError.response = {
         statusCode,
-      };
+      } as HTTPError['response'];
       mockGot.post.mockRejectedValueOnce(httpError);
 
       let caughtErr;
@@ -349,10 +349,14 @@ interface Constructable {
   new(...args: any[]): any
 }
 
-function produceFoolInstance(Class: Constructable) {
+type Mutable<T> = { -readonly [P in keyof T ]: T[P] };
+
+function produceFoolInstance<T extends Constructable>(Class: T): Mutable<InstanceType<T>>  {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   function f() { }
   f.prototype = Class.prototype;
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore: TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
   return new f();
 }
