@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/LuckboxGG/http-adapter-factory.svg?branch=master)](https://travis-ci.org/LuckboxGG/http-adapter-factory)
+[![Build Status](https://travis-ci.org/LuckboxGG/http-adapter-factory.svg?branch=main)](https://travis-ci.org/LuckboxGG/http-adapter-factory)
 
-[![Coverage Status](https://coveralls.io/repos/github/LuckboxGG/http-adapter-factory/badge.svg?branch=master)](https://coveralls.io/github/LuckboxGG/http-adapter-factory?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/LuckboxGG/http-adapter-factory/badge.svg?branch=main)](https://coveralls.io/github/LuckboxGG/http-adapter-factory?branch=main)
 
 # Http Adapter Factory
 
