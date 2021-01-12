@@ -1,5 +1,3 @@
-import HttpStatusCodes from 'http-status-codes';
-
 type ConstructorParams = {
   statusCode: number,
   message: string,
@@ -17,39 +15,39 @@ class HttpStatusCodeError extends Error {
   }
 
   isTooManyRequests(): boolean {
-    return this.statusCode === HttpStatusCodes.TOO_MANY_REQUESTS;
+    return this.statusCode === 429;
   }
 
   isUnauthorized(): boolean {
-    return this.statusCode === HttpStatusCodes.UNAUTHORIZED;
+    return this.statusCode === 401;
   }
 
   isForbidden(): boolean {
-    return this.statusCode === HttpStatusCodes.FORBIDDEN;
+    return this.statusCode === 403;
   }
 
   isServerError(): boolean {
-    return this.statusCode === HttpStatusCodes.INTERNAL_SERVER_ERROR;
+    return this.statusCode === 500;
   }
 
   isNotFound(): boolean {
-    return this.statusCode === HttpStatusCodes.NOT_FOUND;
+    return this.statusCode === 404;
   }
 
   isBadRequest(): boolean {
-    return this.statusCode === HttpStatusCodes.BAD_REQUEST;
+    return this.statusCode === 400;
   }
 
   isBadGateway(): boolean {
-    return this.statusCode === HttpStatusCodes.BAD_GATEWAY;
+    return this.statusCode === 502;
   }
 
   isServiceUnavailable(): boolean {
-    return this.statusCode === HttpStatusCodes.SERVICE_UNAVAILABLE;
+    return this.statusCode === 503;
   }
 
   isGatewayTimeout(): boolean {
-    return this.statusCode === HttpStatusCodes.GATEWAY_TIMEOUT;
+    return this.statusCode === 504;
   }
 
   getStatusCode(): number {
