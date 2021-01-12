@@ -14,9 +14,6 @@ const mockGot = got as jest.Mocked<typeof got>;
 describe('GotHttpAdapter', () => {
   let httpAdapter: GotHttpAdapter;
   beforeAll(() => {
-    mockGot.get = jest.fn();
-    mockGot.post = jest.fn();
-
     const okResponse = {
       body: {
         data: null,
