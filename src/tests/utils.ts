@@ -6,7 +6,7 @@ type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
 
-function produceFoolInstance<T extends Constructable>(Class: T, properties?: DeepPartial<InstanceType<T>>): InstanceType<T> {
+function produceFoolInstance<T extends Constructable, Instance = InstanceType<T>>(Class: T, properties?: DeepPartial<Instance>): Instance {
   const object = Object.setPrototypeOf({}, Class.prototype);
   return Object.assign(object, properties);
 }
