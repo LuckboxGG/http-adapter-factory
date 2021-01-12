@@ -22,7 +22,6 @@ await httpAdapter.post('http://example.com', {
   email: 'user@exampke.com',
   password: '123456'
 });
-const anotherInfoLogger = infoLoggerFactory.create('Classname2');
 ```
 
 ## Supported implementations:
