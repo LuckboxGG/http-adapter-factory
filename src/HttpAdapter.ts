@@ -1,7 +1,7 @@
 type ObjectLike = Record<string, any>
 
 type SearchParams = ObjectLike;
-type Headers = ObjectLike;
+type Headers = Record<string, string | Array<string>>;
 type Body = ObjectLike;
 
 type ConstructorParams = {

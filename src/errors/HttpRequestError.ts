@@ -1,10 +1,12 @@
+import { Headers } from '../HttpAdapter';
+
 type ObjectLike = Record<string, any>;
 
 type Request = {
   method: string,
   url: string,
   body?: ObjectLike,
-  headers: ObjectLike,
+  headers: Headers,
 }
 
 type ConstructorParams = {

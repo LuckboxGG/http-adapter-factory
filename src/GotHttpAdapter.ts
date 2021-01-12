@@ -22,6 +22,7 @@ import HttpAdapter, {
   ContentTypes,
   DEFAULTS,
 } from './HttpAdapter';
+import { IncomingHttpHeaders } from 'http';
 
 class GotHttpAdapter implements HttpAdapter {
   private readonly timeout: number;
@@ -96,11 +97,24 @@ class GotHttpAdapter implements HttpAdapter {
     if (opts.resolveFullResponse) {
       return {
         body: response.body,
-        headers: response.headers,
+        headers: this.stripUndefinedHeaders(response.headers),
       };
     }
 
     return response.body;
+  }
+
+  private stripUndefinedHeaders(headers: IncomingHttpHeaders) {
+    type ExtractRecordValueType<T> = T extends Record<any, infer P> ? P : never;
+
+    const cleansedHeaders: Headers = {};
+    for (const key in headers) {
+      if (headers[key] !== undefined) {
+        cleansedHeaders[key] = headers[key] as ExtractRecordValueType<Headers>;
+      }
+    }
+
+    return cleansedHeaders;
   }
 
   private handleError(err: Error, request: Request): never {
