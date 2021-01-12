@@ -5,6 +5,7 @@ import HttpStatusCodeError from '../errors/HttpStatusCodeError';
 
 import GotHttpAdapter from '../GotHttpAdapter';
 import { ArrayFormats, ContentTypes } from '../HttpAdapter';
+import { produceFoolInstance } from './utils';
 
 jest.mock('got');
 
@@ -136,11 +137,12 @@ describe('GotHttpAdapter', () => {
       404,
       500,
     ])('should throw HttpStatusCodeError[%s] when got throws HTTPError', async (statusCode: number) => {
-      const httpError = produceFoolInstance(HTTPError);
-      httpError.message = 'Http Error';
-      httpError.response = {
-        statusCode,
-      } as HTTPError['response'];
+      const httpError = produceFoolInstance(HTTPError, {
+        message: 'Http Error',
+        response: {
+          statusCode,
+        },
+      });
       mockGot.get.mockRejectedValueOnce(httpError);
 
       let caughtErr;
@@ -293,11 +295,12 @@ describe('GotHttpAdapter', () => {
       404,
       500,
     ])('should throw HttpStatusCodeError[%s] when got throws HTTPError', async (statusCode: number) => {
-      const httpError = produceFoolInstance(HTTPError);
-      httpError.message = 'Http Error';
-      httpError.response = {
-        statusCode,
-      } as HTTPError['response'];
+      const httpError = produceFoolInstance(HTTPError, {
+        message: 'Http Error',
+        response: {
+          statusCode,
+        },
+      });
       mockGot.post.mockRejectedValueOnce(httpError);
 
       let caughtErr;
@@ -312,9 +315,10 @@ describe('GotHttpAdapter', () => {
     });
 
     it('should throw HttpRequestError when got throws RequestError', async () => {
-      const requestError = produceFoolInstance(RequestError);
-      requestError.message = 'Request Error';
-      requestError.name = 'RequestError';
+      const requestError = produceFoolInstance(RequestError, {
+        message: 'Request Error',
+        name: 'RequestError',
+      });
       mockGot.post.mockRejectedValueOnce(requestError);
 
       let caughtErr;
@@ -335,9 +339,10 @@ describe('GotHttpAdapter', () => {
     });
 
     it('should throw HttpGenericError when got throws subclass of RequestError', async () => {
-      const parseError = produceFoolInstance(ParseError);
-      parseError.message = 'Unexpected token < at position...';
-      parseError.name = 'ParseError';
+      const parseError = produceFoolInstance(ParseError, {
+        message: 'Unexpected token < at position...',
+        name: 'ParseError',
+      });
       mockGot.post.mockRejectedValueOnce(parseError);
 
       let caughtErr;
@@ -354,18 +359,3 @@ describe('GotHttpAdapter', () => {
   });
 });
 
-interface Constructable {
-  new(...args: any[]): any
-}
-
-type Mutable<T> = { -readonly [P in keyof T]: T[P] };
-
-function produceFoolInstance<T extends Constructable>(Class: T): Mutable<InstanceType<T>> {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  function f() { }
-  f.prototype = Class.prototype;
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore: TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
-  return new f();
-}
