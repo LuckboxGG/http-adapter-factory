@@ -9,7 +9,7 @@ A factory producing http adapters with different(in the near future) underlying 
 ### Usage
 
 ```
-import HttpAdapterFactory from './src/index';
+import HttpAdapterFactory from '@luckbox/http-adapter-factory';
 
 const httpAdapterFactory = new HttpAdapterFactory();
 const httpAdapter = httpAdapterFactory.create({
