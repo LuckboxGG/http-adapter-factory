@@ -1,11 +1,9 @@
 import { Headers } from '../HttpAdapter';
 
-type ObjectLike = Record<string, any>;
-
 type Request = {
   method: string,
   url: string,
-  body?: ObjectLike,
+  body?: Record<string, unknown>,
   headers: Headers,
 }
 

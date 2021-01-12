@@ -1,8 +1,6 @@
-type ObjectLike = Record<string, any>
-
-type SearchParams = ObjectLike;
+type SearchParams = Record<string, unknown>;
 type Headers = Record<string, string | Array<string>>;
-type Body = ObjectLike;
+type Body = Record<string, unknown>;
 
 type ConstructorParams = {
   timeout?: number,
