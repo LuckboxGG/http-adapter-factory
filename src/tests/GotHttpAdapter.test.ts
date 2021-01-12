@@ -59,15 +59,24 @@ describe('GotHttpAdapter', () => {
 
     const searchParams = { a: [1, 2] };
     it.each([
-      [undefined,             'a[]=1&a[]=2'],
+      [undefined, 'a[]=1&a[]=2'],
       [ArrayFormats.Brackets, 'a[]=1&a[]=2'],
-      [ArrayFormats.Comma,    'a=1,2'],
-      [ArrayFormats.Indices,  'a[0]=1&a[1]=2'],
-      [ArrayFormats.Repeat,    'a=1&a=2'],
+      [ArrayFormats.Comma, 'a=1,2'],
+      [ArrayFormats.Indices, 'a[0]=1&a[1]=2'],
+      [ArrayFormats.Repeat, 'a=1&a=2'],
     ])('should format the arrays in the query as requested [%s]', async (arrayFormat: ArrayFormats | undefined, expectedQuery: string) => {
       const url = 'http://example.com';
       await httpAdapter.get(url, searchParams, {}, { arrayFormat });
       expect(mockGot.get).toHaveBeenCalledWith(url + '?' + expectedQuery, expect.anything());
+    });
+
+    it('should correctly handle urls with provided query params', async () => {
+      const urlWithQuery = 'http://example.com?bar=foo';
+      await httpAdapter.get(urlWithQuery, {
+        foo: 'bar',
+      });
+
+      expect(mockGot.get).toHaveBeenCalledWith(urlWithQuery + '&foo=bar', expect.anything());
     });
 
     it('should call the got.get method with correct args', async () => {
@@ -87,8 +96,8 @@ describe('GotHttpAdapter', () => {
 
     it.each([
       [undefined, 'json'],
-      [true,      'json'],
-      [false,     'text'],
+      [true, 'json'],
+      [false, 'text'],
     ])('should call the got.post with correct responseType when passing parseJSON = %s', async (parseJSON: boolean | undefined, expectedResponseType: string) => {
       await httpAdapter.get('http://example.com', {}, undefined, {
         parseJSON,
@@ -227,8 +236,8 @@ describe('GotHttpAdapter', () => {
 
     it.each([
       [undefined, 'json'],
-      [true,      'json'],
-      [false,     'text'],
+      [true, 'json'],
+      [false, 'text'],
     ])('should call the got.post with correct responseType when passing parseJSON = %s', async (parseJSON: boolean | undefined, expectedResponseType: string) => {
       await httpAdapter.post('http://example.com', {}, undefined, {
         parseJSON,
@@ -240,7 +249,7 @@ describe('GotHttpAdapter', () => {
     });
 
     it.each([
-      [undefined,         'json'],
+      [undefined, 'json'],
       [ContentTypes.Form, 'form'],
       [ContentTypes.JSON, 'json'],
     ])('should call the got.post with correct key (form or json) when passing contentType = %s', async (contentType: ContentTypes | undefined, expectedKey: string) => {
@@ -349,9 +358,9 @@ interface Constructable {
   new(...args: any[]): any
 }
 
-type Mutable<T> = { -readonly [P in keyof T ]: T[P] };
+type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 
-function produceFoolInstance<T extends Constructable>(Class: T): Mutable<InstanceType<T>>  {
+function produceFoolInstance<T extends Constructable>(Class: T): Mutable<InstanceType<T>> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   function f() { }
   f.prototype = Class.prototype;

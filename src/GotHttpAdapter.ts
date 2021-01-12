@@ -34,11 +34,13 @@ class GotHttpAdapter implements HttpAdapter {
     let urlToRequest = url;
 
     if (Object.keys(params).length > 0) {
-      urlToRequest += qs.stringify(params, {
+      const query = qs.stringify(params, {
         arrayFormat: opts.arrayFormat ?? ArrayFormats.Brackets,
         encode: false,
-        addQueryPrefix: true,
       });
+
+      const delimiter = url.includes('?') ? '&' : '?';
+      urlToRequest += delimiter + query;
     }
 
     try {
