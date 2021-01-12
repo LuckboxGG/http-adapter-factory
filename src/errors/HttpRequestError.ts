@@ -15,7 +15,7 @@ type ConstructorParams = {
 }
 
 class HttpRequestError extends Error {
-  public readonly request: any;
+  public readonly request: Request;
 
   constructor(params: ConstructorParams) {
     super(params.message);
