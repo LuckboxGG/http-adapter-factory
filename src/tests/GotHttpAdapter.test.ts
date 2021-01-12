@@ -27,7 +27,7 @@ describe('GotHttpAdapter', () => {
     httpAdapter = new GotHttpAdapter();
   });
 
-  beforeEach(() => {
+  afterEach(() => {
     mockGot.get.mockClear();
     mockGot.post.mockClear();
   });
