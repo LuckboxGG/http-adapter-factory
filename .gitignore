@@ -1,0 +1,7 @@
+.idea/
+node_modules/
+.eslintcache
+dist/
+coverage/
+.vscode/
+tsconfig.tsbuildinfo
