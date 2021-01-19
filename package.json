@@ -1,6 +1,6 @@
 {
   "name": "@luckbox/http-adapter-factory",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy to use http adapter factory with support for GET/POST.",
   "author": "Luckbox",
   "main": "dist/index.js",
