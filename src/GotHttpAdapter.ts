@@ -122,6 +122,7 @@ class GotHttpAdapter implements HttpAdapter {
       throw new HttpStatusCodeError({
         message: err.message,
         statusCode: err.response.statusCode,
+        body: err.response.body,
       });
     }
 

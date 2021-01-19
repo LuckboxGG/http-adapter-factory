@@ -1,17 +1,20 @@
 type ConstructorParams = {
   statusCode: number,
   message: string,
+  body: unknown,
 }
 
 class HttpStatusCodeError extends Error {
   public readonly statusCode: number;
   public readonly message: string;
+  public readonly body: unknown;
 
   constructor(params: ConstructorParams) {
     super(params.message);
 
     this.name = 'HttpStatusCodeError';
     this.statusCode = params.statusCode;
+    this.body = params.body;
   }
 
   isTooManyRequests(): boolean {
