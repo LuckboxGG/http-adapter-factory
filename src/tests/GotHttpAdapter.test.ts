@@ -57,10 +57,10 @@ describe('GotHttpAdapter', () => {
 
     const searchParams = { a: [1, 2] };
     it.each([
-      [undefined, 'a[]=1&a[]=2'],
-      [ArrayFormats.Brackets, 'a[]=1&a[]=2'],
-      [ArrayFormats.Comma, 'a=1,2'],
-      [ArrayFormats.Indices, 'a[0]=1&a[1]=2'],
+      [undefined, 'a%5B%5D=1&a%5B%5D=2'],
+      [ArrayFormats.Brackets, 'a%5B%5D=1&a%5B%5D=2'],
+      [ArrayFormats.Comma, 'a=1%2C2'],
+      [ArrayFormats.Indices, 'a%5B0%5D=1&a%5B1%5D=2'],
       [ArrayFormats.Repeat, 'a=1&a=2'],
     ])('should format the arrays in the query as requested [%s]', async (arrayFormat: ArrayFormats | undefined, expectedQuery: string) => {
       const url = 'http://example.com';
