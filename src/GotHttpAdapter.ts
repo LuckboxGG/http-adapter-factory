@@ -37,7 +37,7 @@ class GotHttpAdapter implements HttpAdapter {
     if (Object.keys(params).length > 0) {
       const query = qs.stringify(params, {
         arrayFormat: opts.arrayFormat ?? ArrayFormats.Brackets,
-        encode: false,
+        encode: true,
       });
 
       const delimiter = url.includes('?') ? '&' : '?';
