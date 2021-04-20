@@ -199,7 +199,7 @@ describe('GotHttpAdapter', () => {
         message: 'Unexpected token < at position 10 in "http://example.com"',
         name: 'ParseError',
         response: {
-          body: 'Invalid JSON',
+          rawBody: Buffer.from('Invalid JSON'),
         },
       });
 
@@ -383,7 +383,7 @@ describe('GotHttpAdapter', () => {
         message: 'Unexpected token < at position 10 in "http://example.com"',
         name: 'ParseError',
         response: {
-          body: 'Invalid JSON',
+          rawBody: Buffer.from('Invalid JSON'),
         },
       });
 

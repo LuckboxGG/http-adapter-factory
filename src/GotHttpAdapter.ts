@@ -131,7 +131,7 @@ class GotHttpAdapter implements HttpAdapter {
     if (err instanceof GotParseError) {
       throw new ParseError({
         message: err.message.split(/\sin\s+"?https?:\/{2}/i, 1)[0],
-        responseBody: err.response.body,
+        responseBody: err.response.rawBody.toString(),
       });
     }
 

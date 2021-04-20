@@ -1,12 +1,12 @@
-type ConstructorParams<ResponseBodyType = unknown> = {
+type ConstructorParams = {
   message: string;
-  responseBody: ResponseBodyType;
+  responseBody: string;
 }
 
-class ParseError<ResponseBodyType = unknown> extends Error {
-  public readonly responseBody: ResponseBodyType;
+class ParseError extends Error {
+  public readonly responseBody: string;
 
-  constructor(params: ConstructorParams<ResponseBodyType>) {
+  constructor(params: ConstructorParams) {
     super(params.message);
 
     this.name = 'ParseError';
