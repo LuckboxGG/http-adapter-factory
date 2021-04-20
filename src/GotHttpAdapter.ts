@@ -3,6 +3,7 @@ import got, {
   RequestError,
   OptionsOfUnknownResponseBody,
   Response as GotResponse,
+  ParseError as GotParseError,
 } from 'got';
 import * as qs from 'qs';
 
@@ -23,6 +24,7 @@ import HttpAdapter, {
   DEFAULTS,
 } from './HttpAdapter';
 import { IncomingHttpHeaders } from 'http';
+import ParseError from './errors/ParseError';
 
 class GotHttpAdapter implements HttpAdapter {
   private readonly timeout: number;
@@ -123,6 +125,13 @@ class GotHttpAdapter implements HttpAdapter {
         message: err.message,
         statusCode: err.response.statusCode,
         body: err.response.body,
+      });
+    }
+
+    if (err instanceof GotParseError) {
+      throw new ParseError({
+        message: err.message.split(/\sin\s+"?https?:\/{2}/i, 1)[0],
+        responseBody: err.response.rawBody.toString(),
       });
     }
 

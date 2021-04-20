@@ -1,4 +1,5 @@
-import got, { HTTPError, ParseError, RequestError } from 'got';
+import got, { HTTPError, ParseError as GotParseError, RequestError  } from 'got';
+import ParseError from '../errors/ParseError';
 import HttpGenericError from '../errors/HttpGenericError';
 import HttpRequestError from '../errors/HttpRequestError';
 import HttpStatusCodeError from '../errors/HttpStatusCodeError';
@@ -176,10 +177,10 @@ describe('GotHttpAdapter', () => {
     });
 
     it('should throw HttpGenericError when got throws subclass of RequestError', async () => {
-      const parseError = produceFoolInstance(ParseError);
-      parseError.message = 'Unexpected token < at position...';
-      parseError.name = 'ParseError';
-      mockGot.get.mockRejectedValueOnce(parseError);
+      const timeoutError = produceFoolInstance(RequestError);
+      timeoutError.message = 'Connection has timed out';
+      timeoutError.name = 'TimeoutError';
+      mockGot.get.mockRejectedValueOnce(timeoutError);
 
       let caughtErr;
       const url = 'http://example.com';
@@ -190,7 +191,30 @@ describe('GotHttpAdapter', () => {
       }
 
       expect(caughtErr).toBeInstanceOf(HttpGenericError);
-      expect(caughtErr.originalError).toEqual(parseError);
+      expect(caughtErr.originalError).toEqual(timeoutError);
+    });
+
+    it('should throw ParseError when got throws ParseError', async () => {
+      const parseError = produceFoolInstance(GotParseError, {
+        message: 'Unexpected token < at position 10 in "http://example.com"',
+        name: 'ParseError',
+        response: {
+          rawBody: Buffer.from('Invalid JSON'),
+        },
+      });
+
+      mockGot.post.mockRejectedValueOnce(parseError);
+
+      let caughtErr;
+
+      try {
+        await httpAdapter.post('http://example.com');
+      } catch (err) {
+        caughtErr = err;
+      }
+
+      expect(caughtErr).toBeInstanceOf(ParseError);
+      expect(caughtErr.message).toEqual('Unexpected token < at position 10');
     });
   });
 
@@ -336,11 +360,11 @@ describe('GotHttpAdapter', () => {
     });
 
     it('should throw HttpGenericError when got throws subclass of RequestError', async () => {
-      const parseError = produceFoolInstance(ParseError, {
-        message: 'Unexpected token < at position...',
-        name: 'ParseError',
+      const unexpectedCloseError = produceFoolInstance(RequestError, {
+        message: 'Connection has been closed unexpectedly',
+        name: 'UnexpectedCloseError',
       });
-      mockGot.post.mockRejectedValueOnce(parseError);
+      mockGot.post.mockRejectedValueOnce(unexpectedCloseError);
 
       let caughtErr;
       const url = 'http://example.com';
@@ -351,7 +375,30 @@ describe('GotHttpAdapter', () => {
       }
 
       expect(caughtErr).toBeInstanceOf(HttpGenericError);
-      expect(caughtErr.originalError).toEqual(parseError);
+      expect(caughtErr.originalError).toEqual(unexpectedCloseError);
+    });
+
+    it('should throw ParseError when got throws ParseError', async () => {
+      const parseError = produceFoolInstance(GotParseError, {
+        message: 'Unexpected token < at position 10 in "http://example.com"',
+        name: 'ParseError',
+        response: {
+          rawBody: Buffer.from('Invalid JSON'),
+        },
+      });
+
+      mockGot.post.mockRejectedValueOnce(parseError);
+
+      let caughtErr;
+
+      try {
+        await httpAdapter.post('http://example.com');
+      } catch (err) {
+        caughtErr = err;
+      }
+
+      expect(caughtErr).toBeInstanceOf(ParseError);
+      expect(caughtErr.message).toEqual('Unexpected token < at position 10');
     });
   });
 });
