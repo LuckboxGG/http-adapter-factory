@@ -196,7 +196,7 @@ describe('GotHttpAdapter', () => {
 
     it('should throw ParseError when got throws ParseError', async () => {
       const parseError = produceFoolInstance(GotParseError, {
-        message: 'Unexpected token < at position 10 in http://example.com',
+        message: 'Unexpected token < at position 10 in "http://example.com"',
         name: 'ParseError',
         response: {
           body: 'Invalid JSON',
@@ -380,7 +380,7 @@ describe('GotHttpAdapter', () => {
 
     it('should throw ParseError when got throws ParseError', async () => {
       const parseError = produceFoolInstance(GotParseError, {
-        message: 'Unexpected token < at position 10 in http://example.com',
+        message: 'Unexpected token < at position 10 in "http://example.com"',
         name: 'ParseError',
         response: {
           body: 'Invalid JSON',
