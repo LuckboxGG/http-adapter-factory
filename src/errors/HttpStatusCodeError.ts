@@ -1,4 +1,4 @@
-import { Headers } from '../HttpAdapter.js';
+import { Headers } from '../HttpAdapter';
 
 type ConstructorParams = {
   statusCode: number,
