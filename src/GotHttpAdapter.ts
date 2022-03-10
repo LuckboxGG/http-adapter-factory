@@ -125,6 +125,7 @@ class GotHttpAdapter implements HttpAdapter {
         message: err.message,
         statusCode: err.response.statusCode,
         body: err.response.body,
+        headers: this.stripUndefinedHeaders(err.response.headers),
       });
     }
 

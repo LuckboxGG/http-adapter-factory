@@ -1,13 +1,17 @@
+import { Headers } from '../HttpAdapter.js';
+
 type ConstructorParams = {
   statusCode: number,
   message: string,
   body: unknown,
+  headers: Headers,
 }
 
 class HttpStatusCodeError extends Error {
   public readonly statusCode: number;
   public readonly message: string;
   public readonly body: unknown;
+  public readonly headers: Headers;
 
   constructor(params: ConstructorParams) {
     super(params.message);
@@ -15,6 +19,7 @@ class HttpStatusCodeError extends Error {
     this.name = 'HttpStatusCodeError';
     this.statusCode = params.statusCode;
     this.body = params.body;
+    this.headers = params.headers;
   }
 
   isTooManyRequests(): boolean {
