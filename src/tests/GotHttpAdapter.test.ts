@@ -1,4 +1,4 @@
-import got, { HTTPError, ParseError as GotParseError, RequestError  } from 'got';
+import got, { HTTPError, ParseError as GotParseError, RequestError, TimeoutError  } from 'got';
 import ParseError from '../errors/ParseError';
 import HttpGenericError from '../errors/HttpGenericError';
 import HttpRequestError from '../errors/HttpRequestError';
@@ -7,6 +7,7 @@ import HttpStatusCodeError from '../errors/HttpStatusCodeError';
 import GotHttpAdapter from '../GotHttpAdapter';
 import { ArrayFormats, ContentTypes } from '../HttpAdapter';
 import { produceFoolInstance } from './utils';
+import HttpTimeoutError from '../errors/HttpTimeoutError';
 
 jest.mock('got');
 
@@ -357,6 +358,24 @@ describe('GotHttpAdapter', () => {
         headers: {},
         body: {},
       });
+    });
+
+    it('should throw HttpTimeoutError when got throws TimeoutError', async () => {
+      const timeoutError = produceFoolInstance(TimeoutError, {
+        message: 'Timeout Error',
+        name: 'TimeoutError',
+      });
+      mockGot.post.mockRejectedValueOnce(timeoutError);
+
+      let caughtErr;
+      const url = 'http://example.com';
+      try {
+        await httpAdapter.post(url);
+      } catch (err) {
+        caughtErr = err;
+      }
+
+      expect(caughtErr).toBeInstanceOf(HttpTimeoutError);
     });
 
     it('should throw HttpGenericError when got throws subclass of RequestError', async () => {

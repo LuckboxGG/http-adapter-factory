@@ -4,12 +4,14 @@ import got, {
   OptionsOfUnknownResponseBody,
   Response as GotResponse,
   ParseError as GotParseError,
+  TimeoutError,
 } from 'got';
 import * as qs from 'qs';
 
 import HttpStatusCodeError from './errors/HttpStatusCodeError';
 import HttpRequestError, { Request } from './errors/HttpRequestError';
 import HttpGenericError from './errors/HttpGenericError';
+import HttpTimeoutError from './errors/HttpTimeoutError';
 import HttpAdapter, {
   SearchParams,
   Headers,
@@ -141,6 +143,10 @@ class GotHttpAdapter implements HttpAdapter {
         message: err.message,
         request,
       });
+    }
+
+    if (err instanceof TimeoutError) {
+      throw new HttpTimeoutError(this.timeout);
     }
 
     throw new HttpGenericError({
