@@ -28,6 +28,12 @@ type CustomPostOptions = Omit<CustomGetOptions, 'arrayFormat'> & {
   contentType?: ContentTypes,
 }
 
+type CustomDeleteOptions = {
+  arrayFormat?: ArrayFormats,
+  parseJSON?: boolean,
+  resolveFullResponse?: boolean,
+}
+
 type AnyRequestOptions = CustomGetOptions | CustomPostOptions;
 
 type FullResponse<T> = {
@@ -38,6 +44,7 @@ type FullResponse<T> = {
 interface HttpAdapter {
   get<Response>(url: string, params?: SearchParams, headers?: Headers, opts?: CustomGetOptions): Promise<Response | FullResponse<Response>>;
   post<Response>(url: string, body?: Body, headers?: Headers, opts?: CustomPostOptions): Promise<Response | FullResponse<Response>>;
+  delete<Response>(url: string, params?: SearchParams, headers?: Headers, opts?: CustomDeleteOptions): Promise<Response | FullResponse<Response>>;
 }
 
 const DEFAULTS = {
@@ -54,6 +61,7 @@ export {
   ContentTypes,
   CustomGetOptions,
   CustomPostOptions,
+  CustomDeleteOptions,
   AnyRequestOptions,
   FullResponse,
   ConstructorParams,

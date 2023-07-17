@@ -85,6 +85,34 @@ class GotHttpAdapter implements HttpAdapter {
     }
   }
 
+  async delete<Response>(url: string, params: SearchParams = {}, headers: Headers = {}, opts: CustomGetOptions = {}): Promise<Response | FullResponse<Response>> {
+    let urlToRequest = url;
+
+    if (Object.keys(params).length > 0) {
+      const query = qs.stringify(params, {
+        arrayFormat: opts.arrayFormat ?? ArrayFormats.Brackets,
+        encode: true,
+      });
+
+      const delimiter = url.includes('?') ? '&' : '?';
+      urlToRequest += delimiter + query;
+    }
+
+    try {
+      const response = await got.delete(urlToRequest, this.getCommonOpts(headers, opts)) as GotResponse<Response>;
+
+      return this.prepareResponse(response, opts);
+    } catch (err) {
+      const request = {
+        url: urlToRequest,
+        method: 'GET',
+        headers,
+      };
+
+      this.handleError(err, request);
+    }
+  }
+
   private getCommonOpts(headers: Headers, opts: AnyRequestOptions) {
     const parseJSON = (opts.parseJSON ?? DEFAULTS.PARSE_JSON);
 
