@@ -18,17 +18,26 @@ enum ContentTypes {
   Form = 'form',
 }
 
-type CustomGetOptions = {
-  arrayFormat?: ArrayFormats,
+type CommonRequestOptions = {
   parseJSON?: boolean,
   resolveFullResponse?: boolean,
 }
 
-type CustomPostOptions = Omit<CustomGetOptions, 'arrayFormat'> & {
+type RequestWithBodyOptions = CommonRequestOptions & {
   contentType?: ContentTypes,
 }
 
-type AnyRequestOptions = CustomGetOptions | CustomPostOptions;
+type RequestWithoutBodyOptions = CommonRequestOptions & {
+  arrayFormat?: ArrayFormats,
+}
+
+type CustomGetOptions = RequestWithoutBodyOptions;
+type CustomDeleteOptions = RequestWithoutBodyOptions;
+type CustomPostOptions = RequestWithBodyOptions;
+type CustomPatchOptions = RequestWithBodyOptions;
+type CustomPutOptions = RequestWithBodyOptions;
+
+type AnyRequestOptions = CustomGetOptions | CustomDeleteOptions | CustomPostOptions | CustomPatchOptions | CustomPutOptions;
 
 type FullResponse<T> = {
   body: T,
@@ -38,6 +47,9 @@ type FullResponse<T> = {
 interface HttpAdapter {
   get<Response>(url: string, params?: SearchParams, headers?: Headers, opts?: CustomGetOptions): Promise<Response | FullResponse<Response>>;
   post<Response>(url: string, body?: Body, headers?: Headers, opts?: CustomPostOptions): Promise<Response | FullResponse<Response>>;
+  delete<Response>(url: string, params?: SearchParams, headers?: Headers, opts?: CustomDeleteOptions): Promise<Response | FullResponse<Response>>;
+  patch<Response>(url: string, body?: Body, headers?: Headers, opts?: CustomPatchOptions): Promise<Response | FullResponse<Response>>;
+  put<Response>(url: string, body?: Body, headers?: Headers, opts?: CustomPutOptions): Promise<Response | FullResponse<Response>>;
 }
 
 const DEFAULTS = {
@@ -54,11 +66,14 @@ export {
   ContentTypes,
   CustomGetOptions,
   CustomPostOptions,
-  AnyRequestOptions,
+  CustomDeleteOptions,
+  CustomPatchOptions,
+  CustomPutOptions,
   FullResponse,
   ConstructorParams,
   SearchParams,
   Headers,
   Body,
   DEFAULTS,
+  AnyRequestOptions,
 };
