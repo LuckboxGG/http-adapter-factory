@@ -1,7 +1,7 @@
 {
   "name": "@luckbox/http-adapter-factory",
   "version": "1.4.0",
-  "description": "Easy to use http adapter factory with support for GET/POST and DELETE.",
+  "description": "Easy to use http adapter factory with support for GET, POST and DELETE.",
   "author": "Luckbox",
   "main": "dist/index.js",
   "repository": {
