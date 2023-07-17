@@ -24,6 +24,9 @@ import HttpAdapter, {
   Body,
   ContentTypes,
   DEFAULTS,
+  CustomDeleteOptions,
+  CustomPatchOptions,
+  CustomPutOptions,
 } from './HttpAdapter';
 import { IncomingHttpHeaders } from 'http';
 import ParseError from './errors/ParseError';
@@ -85,7 +88,7 @@ class GotHttpAdapter implements HttpAdapter {
     }
   }
 
-  async delete<Response>(url: string, params: SearchParams = {}, headers: Headers = {}, opts: CustomGetOptions = {}): Promise<Response | FullResponse<Response>> {
+  async delete<Response>(url: string, params: SearchParams = {}, headers: Headers = {}, opts: CustomDeleteOptions = {}): Promise<Response | FullResponse<Response>> {
     let urlToRequest = url;
 
     if (Object.keys(params).length > 0) {
@@ -105,8 +108,52 @@ class GotHttpAdapter implements HttpAdapter {
     } catch (err) {
       const request = {
         url: urlToRequest,
-        method: 'GET',
+        method: 'DELETE',
         headers,
+      };
+
+      this.handleError(err, request);
+    }
+  }
+
+  async patch<Response>(url: string, body: Body = {}, headers: Headers = {}, opts: CustomPatchOptions = {}): Promise<Response | FullResponse<Response>> {
+    const contentType = opts.contentType ?? DEFAULTS.CONTENT_TYPE;
+
+    try {
+      const response = await got.patch(url, {
+        ...this.getCommonOpts(headers, opts),
+        [contentType === ContentTypes.JSON ? 'json' : 'form']: body,
+      }) as GotResponse<Response>;
+
+      return this.prepareResponse(response, opts);
+    } catch (err) {
+      const request = {
+        url,
+        method: 'PATCH',
+        headers,
+        body,
+      };
+
+      this.handleError(err, request);
+    }
+  }
+
+  async put<Response>(url: string, body: Body = {}, headers: Headers = {}, opts: CustomPutOptions = {}): Promise<Response | FullResponse<Response>> {
+    const contentType = opts.contentType ?? DEFAULTS.CONTENT_TYPE;
+
+    try {
+      const response = await got.put(url, {
+        ...this.getCommonOpts(headers, opts),
+        [contentType === ContentTypes.JSON ? 'json' : 'form']: body,
+      }) as GotResponse<Response>;
+
+      return this.prepareResponse(response, opts);
+    } catch (err) {
+      const request = {
+        url,
+        method: 'PUT',
+        headers,
+        body,
       };
 
       this.handleError(err, request);

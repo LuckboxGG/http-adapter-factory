@@ -23,6 +23,12 @@ await httpAdapter.post('http://example.com', {
   password: '123456'
 });
 await httpAdapter.delete('http://example.com/123');
+await httpAdapter.patch('http://example.com/123', {
+  bar: 'user@exampke.com',
+});
+await httpAdapter.put('http://example.com/123', {
+  bar: 'user@exampke.com',
+});
 ```
 
 ## Supported implementations:
