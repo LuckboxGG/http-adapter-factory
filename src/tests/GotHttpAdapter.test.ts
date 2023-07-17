@@ -468,7 +468,7 @@ describe('GotHttpAdapter', () => {
       expect(mockGot.delete).toHaveBeenCalledWith(urlWithQuery + '&foo=bar', expect.anything());
     });
 
-    it('should call the got.get method with correct args', async () => {
+    it('should call the got.delete method with correct args', async () => {
       const url = 'http://example.com';
       const headers = {
         'My-Header': 'value',
