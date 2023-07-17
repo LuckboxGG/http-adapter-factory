@@ -22,6 +22,7 @@ await httpAdapter.post('http://example.com', {
   email: 'user@exampke.com',
   password: '123456'
 });
+await httpAdapter.delete('http://example.com/123');
 ```
 
 ## Supported implementations:
